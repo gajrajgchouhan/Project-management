@@ -18,11 +18,12 @@ const Login = () => {
     <div className={styles.container}>
       <form className={styles.formLogin}  method="post">
         <h1>Log In</h1>
+        <br></br>
         <div>
           <div>
           <label for="email">Email address{'\n'}</label>          
 
-          <input type="email" name="email" value={data.email} placeholder="Enter your E-mail id"   />
+          <input type="email" name="email" value={data.email} placeholder="Enter your E-mail id"  required />
             
           </div>
         </div>
@@ -30,7 +31,7 @@ const Login = () => {
           <div>
             
           <label for="password">Password</label>
-            <input type="password" name="password" value={data.password} placeholder="Enter your password"  />
+            <input type="password" name="password" value={data.password} placeholder="Enter your password" required />
             
           </div>
         </div>

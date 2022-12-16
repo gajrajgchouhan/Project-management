@@ -2,12 +2,12 @@
   background: rgb(201, 212, 243);
   box-shadow: var(--box-shadow);
   border: 1px solid var(--secondary-color);
-  /* padding: 25px; */
+  
   border-radius: 11px;
   min-width: 500px;
   padding: 2% 4%;
-  /* border-radius: 5%; */
-  width: 40%;
+  margin: 5%;
+  width: 50%;
 }
 
 
@@ -195,11 +195,3 @@ label {
 }
 
 
-.brsmall {
-  display: flex;
-  margin-bottom: 0.7em;
-  color: '#C0C0C0';
-  fontSize: 18;
-  textAlign: 'justify';
-  lineHeight: 100;
-}

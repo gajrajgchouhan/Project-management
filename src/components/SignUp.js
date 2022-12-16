@@ -10,6 +10,7 @@ import Navbar from "../Navbar";
 const SignUp = () => {
   const [data, setData] = useState({
     name: "",
+    username: "",
     email: "",
     password: "",
     confirmPassword: "",
@@ -44,7 +45,7 @@ const SignUp = () => {
           <div className={errors.name && touched.name ? styles.unCompleted : !errors.name && touched.name ? styles.completed : undefined}>
           <label for="name">Name</label>
 
-            <input type="text" name="name" value={data.name} placeholder="Enter username" onChange={changeHandler} onFocus={focusHandler} />
+            <input type="text" name="name" value={data.name} placeholder="Enter your Name" onChange={changeHandler} onFocus={focusHandler} />
           </div>
           {errors.name && touched.name && <span className={styles.error}>{errors.name}</span>}
         </div>
@@ -70,7 +71,6 @@ const SignUp = () => {
           <label for="password">Password</label>
 
             <input type="password" name="password" value={data.password} placeholder="Password" onChange={changeHandler} onFocus={focusHandler} />
-            {/* <img src={passwordIcon} alt="" /> */}
           </div>
           {errors.password && touched.password && <span className={styles.error}>{errors.password}</span>}
         </div>
@@ -79,7 +79,6 @@ const SignUp = () => {
           <label for="password">Confirm Password</label>
             
             <input type="password" name="confirmPassword" value={data.confirmPassword} placeholder="Confirm Password" onChange={changeHandler} onFocus={focusHandler} />
-            {/* <img src={passwordIcon} alt="" /> */}
           </div>
           {errors.confirmPassword && touched.confirmPassword && <span className={styles.error}>{errors.confirmPassword}</span>}
         </div>

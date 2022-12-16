@@ -19,7 +19,7 @@ const App = () => {
                 <Route path="/Projects" component={Projects} />
                 <Route path="/Profile" component={Profile} />
                 <Route path="/Login" component={Login} />
-                <Route path="/SignUp" component={SignUp} />
+                <Route path="/SignUp" component={SignUp} />         
             </Routes>
         </Router>
     );
