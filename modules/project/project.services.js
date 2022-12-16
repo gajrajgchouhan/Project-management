@@ -1,73 +1,68 @@
 const user = require("../../models/user");
-const bcrypt = require("bcrypt");
-const jwt = require("jsonwebtoken");
+const project = require("../../models/project");
+const task = require("../../models/task");
+const subtask = require("../../models/subtask");
+const team = require("../../models/team");
 
-exports.loginService = async (req, res, next) => {
-    const { username, password } = req.body;
-    const isUser = await user.findOne({ username });
-
-    if (!isUser) {
-        return res.status(404).json({
-            success: false,
-            message: "User not found",
-        });
-    }
-
-    const isMatch = await bcrypt.compare(password, user.password);
-
-    if (!isMatch) {
-        return res.status(400).json({
-            success: false,
-            message: "Invalid credentials",
-        });
-    }
-
-    const payload = {
-        user: {
-            id: isUser.id,
-        },
-    };
-
-    jwt.sign(
-        payload,
-        process.env.JWT_SECRET,
-        {
-            expiresIn: 360000,
-        },
-        (err, token) => {
-            if (err) throw err;
-            res.status(200).json({
-                success: true,
-                token,
-            });
-        }
-    );
+exports.addService = async (req, res, next) => {
+    const { name, description, team } = req.body;
+    const { user } = req.locals;
+    const newProject = new project({
+        name,
+        description,
+        user,
+        team,
+    });
+    await newProject.save();
+    res.status(200).json({ message: "Project added successfully" });
 };
 
-exports.registerService = async (req, res, next) => {
-    const { name, username, password } = req.body;
+exports.getAllService = async (req, res, next) => {
+    const { user } = req.locals;
+    // get id of all teams
+    const teams = await team
+        .find(
+            {
+                $or: [{ user }, { members: { $in: [user] } }],
+            },
+            { _id: 1 }
+        )
+        .exec();
+    // get id of all projects from teams
+    const projects = await project
+        .find({
+            $or: [{ team: { $in: teams } }],
+        })
+        .populate("team")
+        .populate("tasks");
+    res.status(200).json({ projects });
+};
 
-    const isUser = await user.findOne({ username });
+exports.getOneService = async (req, res, next) => {
+    const { user } = req.locals;
+    const { id } = req.body;
+    const project = await project
+        .findOne({
+            $or: [{ _id: id }, { user }],
+        })
+        .populate("team")
+        .populate("tasks");
+    res.status(200).json({ project });
+};
 
-    if (isUser) {
-        return res.status(400).json({
-            success: false,
-            message: "User already exists",
-        });
-    }
-
-    const salt = await bcrypt.genSalt(10);
-    const hashedPassword = await bcrypt.hash(password, salt);
-
-    const newUser = new user({
-        name,
-        username,
-        password: hashedPassword,
-    });
-
-    await newUser.save();
-
-    return res.status(200).json({
-        success: true,
-    });
+exports.updateService = async (req, res, next) => {
+    const { user } = req.locals;
+    const { id, name, description } = req.body;
+    const updatedProject = await project
+        .findOneAndUpdate(
+            {
+                $or: [{ _id: id }, { user }],
+            },
+            {
+                name,
+                description,
+            }
+        )
+        .exec();
+    res.status(200).json({ message: "Project updated successfully" });
 };

@@ -1,5 +1,5 @@
 const express = require("express");
-const authServices = require("./project");
+const projectServices = require("./project.services");
 
 /**
  *
@@ -8,9 +8,9 @@ const authServices = require("./project");
  * @param {express.NextFunction} next
  * @returns
  */
-exports.login = async (req, res, next) => {
+exports.add = async (req, res, next) => {
     try {
-        return await authServices.loginService(req, res, next);
+        return await projectServices.addService(req, res, next);
     } catch (error) {
         console.log(error.stack);
         res.status(500).json({ message: error.message });
@@ -25,9 +25,43 @@ exports.login = async (req, res, next) => {
  * @param {express.NextFunction} next
  * @returns
  */
-exports.register = async (req, res, next) => {
+exports.getAll = async (req, res, next) => {
     try {
-        return await authServices.registerService(req, res, next);
+        return await projectServices.getAllService(req, res, next);
+    } catch (error) {
+        console.log(error.stack);
+        res.status(500).json({ message: error.message });
+        next(error);
+    }
+};
+
+/**
+ *
+ * @param {express.Request} req
+ * @param {express.Response} res
+ * @param {express.NextFunction} next
+ * @returns
+ */
+exports.getOne = async (req, res, next) => {
+    try {
+        return await projectServices.getOneService(req, res, next);
+    } catch (error) {
+        console.log(error.stack);
+        res.status(500).json({ message: error.message });
+        next(error);
+    }
+};
+
+/**
+ *
+ * @param {express.Request} req
+ * @param {express.Response} res
+ * @param {express.NextFunction} next
+ * @returns
+ */
+exports.update = async (req, res, next) => {
+    try {
+        return await projectServices.updateService(req, res, next);
     } catch (error) {
         console.log(error.stack);
         res.status(500).json({ message: error.message });

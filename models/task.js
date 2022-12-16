@@ -1,8 +1,12 @@
 const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 
-const projectSchema = new Schema({
+const taskSchema = new Schema({
     name: {
+        type: String,
+        required: true,
+    },
+    description: {
         type: String,
         required: true,
     },
@@ -11,17 +15,12 @@ const projectSchema = new Schema({
         ref: "User",
         required: true,
     },
-    team: {
-        type: Schema.Types.ObjectId,
-        ref: "Team",
-        required: true,
-    },
-    tasks: [
+    subtasks: [
         {
             type: Schema.Types.ObjectId,
-            ref: "Task",
+            ref: "SubTask",
         },
     ],
 });
 
-module.exports = mongoose.model("Project", projectSchema);
+module.exports = mongoose.model("Task", taskSchema);
