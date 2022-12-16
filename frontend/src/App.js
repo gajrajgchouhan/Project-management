@@ -1,32 +1,22 @@
-// // import logo from './logo.svg';
-// import './App.css';
-// import Login from './components/Login';
-// // import Signup from './pages/Signup';
 
-// import React from 'react' 
-// import FileRoutes from './Routes';
-
-// function App() {
-//   return (
-//     <div className="App">
-//       <Login />
-//     </div>
-    
-//   );
-// }
-
-// export default App;
-import SignUp from "./components/SignUp";
-import Login from "./components/Login";
-import { Route, Routes, Navigate } from "react-router-dom";
-
-function App() {
+import React from 'react';
+import './App.css';
+import Navbar from './components/nav/Navbar'
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import Feed from './components/pages/Feed';
+import Projects from './components/pages/Projects';
+import Profile from './components/pages/Profile';
+const App = () => {
   return (
-    <div className="App">
-      <Login />
-    </div>
-    
-  );
+      <Router>
+        <Navbar />
+        <Routes>
+          <Route path='/Feed' component={Feed} />
+          <Route path='/Projects' component={Projects} />
+          <Route path='/Profile' component={Profile} />
+        </Routes>
+      </Router>
+  )
 }
 // function App() {
 //   return (
@@ -40,4 +30,4 @@ function App() {
 //   );
 
 
-export default App;
+export default App
