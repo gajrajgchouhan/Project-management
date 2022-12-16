@@ -14,7 +14,7 @@ export default function PersonalProfile() {
               <MDBRow className="g-0">
                 <MDBCol md="4" className="gradient-custom text-center text-white"
                   style={{ borderTopLeftRadius: '.5rem', borderBottomLeftRadius: '.5rem' }}>
-                  <MDBCardImage src={require('./default_profile.jpg')}
+                  <MDBCardImage src={require('./img/default_profile.jpg')}
                     alt="Avatar" className="my-5" style={{ width: '80px' }} fluid />
                   <MDBTypography tag="h5">ABCD</MDBTypography>
                   <MDBCardText>Developer</MDBCardText>
