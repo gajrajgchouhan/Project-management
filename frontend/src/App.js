@@ -1,20 +1,20 @@
 import React from "react";
 import "./App.css";
 import Navbar from "./components/nav/Navbar";
-import MyChat from "./components/MyChat";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Feed from "./components/pages/Feed";
 import Projects from "./components/pages/Projects";
 import Profile from "./components/pages/Profile";
+import MyChat from "./components/pages/MyChat";
 const App = () => {
   return (
     <Router>
       <Navbar />
-      <MyChat />
       <Routes>
-        <Route path="/Feed" component={Feed} />
-        <Route path="/Projects" component={Projects} />
-        <Route path="/Profile" component={Profile} />
+        <Route path="/Chat" element={<MyChat />} />
+        <Route path="/Feed" element={<Feed />} />
+        <Route path="/Projects" element={<Projects />} />
+        <Route path="/Profile" element={<Profile />} />
       </Routes>
     </Router>
   );
