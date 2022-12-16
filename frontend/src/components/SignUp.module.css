@@ -1,11 +1,16 @@
 .formLogin {
-  background: #fff;
+  background: rgb(201, 212, 243);
   box-shadow: var(--box-shadow);
   border: 1px solid var(--secondary-color);
-  padding: 25px;
+  /* padding: 25px; */
   border-radius: 11px;
   min-width: 500px;
+  padding: 2% 4%;
+  /* border-radius: 5%; */
+  width: 40%;
 }
+
+
 
 .container {
   display: flex;
@@ -33,11 +38,12 @@
 .formLogin input[type="password"] {
   background: #fff;
   border-radius: 4px;
+  margin-top: 10px;
   outline: 0;
   border: 1px solid var(--secondary-color);
   box-shadow: var(--box-shadow);
   padding: 15px 32px;
-  width: 100%;
+  width: 90%;
   font-family: Arial, Helvetica, sans-serif;
   transition: all 0.3s ease-in-out;
   -webkit-transition: all 0.3s ease-in-out;
@@ -86,8 +92,8 @@
   position: relative;
   margin-right: 10px;
   width: 15px;
-  height: 15px;
-  border: 1px solid var(--main-color);
+  height: 10px;
+  border: none;
   appearance: none;
   border-radius: 5px;
   transition: all 0.2s ease-in-out;
@@ -131,7 +137,7 @@
   margin-top: 5px;
   width: fit-content;
   font-size: 0.7rem;
-  color: red;
+  color: rgb(139, 9, 9);
   line-height: 1px;
   padding: 9px 3px;
   border-radius: 3px;
@@ -142,20 +148,21 @@
 .formLogin button[type="submit"] {
   display: block;
   text-align: center;
-  width: 100%;
+  /* width: 100%; */
   border-radius: 8px;
   outline: 0;
   border: none;
-  color: #fff;
+  color: white;
   padding: 10px;
   margin: 15px 0;
-  background: var(--main-color);
+  background: rgb(84, 185, 84);
   cursor: pointer;
   transition: all 0.3s ease-in-out;
   -webkit-transition: all 0.3s ease-in-out;
   -moz-transition: all 0.3s ease-in-out;
   -ms-transition: all 0.3s ease-in-out;
   -o-transition: all 0.3s ease-in-out;
+  
 }
 
 .formLogin button[type="submit"]:hover {
@@ -180,4 +187,19 @@
   .formLogin input[type="password"] {
     padding: 10px 32px;
   }
+}
+
+label {
+  
+  display: flex;
+}
+
+
+.brsmall {
+  display: flex;
+  margin-bottom: 0.7em;
+  color: '#C0C0C0';
+  fontSize: 18;
+  textAlign: 'justify';
+  lineHeight: 100;
 }

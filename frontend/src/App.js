@@ -6,6 +6,10 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Feed from './components/pages/Feed';
 import Projects from './components/pages/Projects';
 import Profile from './components/pages/Profile';
+import SignUp from './components/SignUp';
+import Login from './components/Login';
+
+
 const App = () => {
   return (
       <Router>
@@ -14,20 +18,14 @@ const App = () => {
           <Route path='/Feed' component={Feed} />
           <Route path='/Projects' component={Projects} />
           <Route path='/Profile' component={Profile} />
+          <Route path='/Login' component={Login} />
+          <Route path='/SignUp' component={SignUp} />
+
+
         </Routes>
       </Router>
   )
 }
-// function App() {
-//   return (
-//     <>
-//       <Routes>
-//         <Route path="/login" component={Login} />
-//         <Route path="/signup" component={SignUp} />
-//         <Navigate from="/" to="/signup" />
-//       </Routes>
-//     </>
-//   );
 
 
 export default App
