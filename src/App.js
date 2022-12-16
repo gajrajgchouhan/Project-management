@@ -1,4 +1,9 @@
 import React from "react";
+
+import { useNavigate, useLocation } from 'react-router-dom';
+
+
+
 import { Navigate, Outlet, Route, Routes } from "react-router-dom";
 import Feed from "./components/pages/Feed";
 import Projects from "./components/pages/Projects";
@@ -9,7 +14,11 @@ import MyChat from "./components/pages/MyChat";
 import Navbar from "./components/nav/Navbar";
 
 const App = () => {
+	
+
     return (
+		<>
+		
         <Routes>
             <Route element={<Layout />}>
                 <Route path="/" element={<div>/</div>} />
@@ -49,6 +58,7 @@ const App = () => {
                 />
             </Route>
         </Routes>
+		</>
     );
 };
 

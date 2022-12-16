@@ -12,7 +12,7 @@ const Login = () => {
 
     return (
         <div className={styles.container}>
-            <form className={styles.formLogin} method="post">
+            <form className={styles.formLogin} >
                 <h1>Log In</h1>
                 <br></br>
                 <div>
@@ -22,7 +22,7 @@ const Login = () => {
                         <input
                             type="email"
                             name="email"
-                            value={data.email}
+                            
                             placeholder="Enter your E-mail id"
                         />
                     </div>
@@ -33,7 +33,7 @@ const Login = () => {
                         <input
                             type="password"
                             name="password"
-                            value={data.password}
+                            
                             placeholder="Enter your password"
                         />
                     </div>
