@@ -1,10 +1,17 @@
 const user = require("../../models/user");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
+const StreamChat = require("stream-chat").StreamChat;
+
+// const serverClient = StreamChat.getInstance(
+//     process.env.API_KEY,
+//     process.env.API_SECRET
+// );
 
 exports.loginService = async (req, res, next) => {
-    const { username, password } = req.body;
-    const isUser = await user.findOne({ username });
+    const { email, password } = req.body;
+    console.log(req.body);
+    const isUser = await user.findOne({ email });
 
     if (!isUser) {
         return res.status(404).json({
@@ -13,7 +20,7 @@ exports.loginService = async (req, res, next) => {
         });
     }
 
-    const isMatch = await bcrypt.compare(password, user.password);
+    const isMatch = await bcrypt.compare(password, isUser.password);
 
     if (!isMatch) {
         return res.status(400).json({
@@ -27,6 +34,8 @@ exports.loginService = async (req, res, next) => {
             id: isUser.id,
         },
     };
+
+    // const token = serverClient.createToken("john");
 
     jwt.sign(
         payload,
@@ -62,6 +71,7 @@ exports.registerService = async (req, res, next) => {
     const newUser = new user({
         name,
         username,
+        email,
         password: hashedPassword,
     });
 

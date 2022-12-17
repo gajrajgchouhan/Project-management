@@ -3,6 +3,34 @@ const project = require("../../models/project");
 const task = require("../../models/task");
 const subtask = require("../../models/subtask");
 const team = require("../../models/team");
+const StreamChat = require("stream-chat").StreamChat;
+const stream = require("getstream");
+
+const serverStreamClient = stream.connect(
+    process.env.API_KEY,
+    process.env.API_SECRET
+);
+
+// const serverChatClient = StreamChat.getInstance(
+//     process.env.API_KEY,
+//     process.env.API_SECRET
+// );
+
+// const channel = serverChatClient.channel("messaging", {
+//     name: "Project 1",
+//     members: ["thierry", "tommaso"],
+//     created_by_id: "myuserid",
+// });
+// await channel.create();
+
+// const channels = await serverChatClient.queryChannels(
+//     { type: "messaging", members: { $in: ["thierry"] } },
+//     [{ last_message_at: -1 }],
+//     {
+//         watch: true, // this is the default
+//         state: true,
+//     }
+// );
 
 exports.addService = async (req, res, next) => {
     const { name, description, team } = req.body;
