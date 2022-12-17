@@ -4,6 +4,9 @@ import AddTaskForm from "./AddTaskForm.jsx";
 import UpdateForm from "./UpdateForm.jsx";
 import ToDo from "./ToDo.jsx";
 import "./proj.css";
+import Table from 'react-bootstrap/Table';
+import CreateProject from "./createProject.js";
+import ProjectDescription from "./descriptionCard.js";
 
 const Projects = () => {
     // Tasks (ToDo List) State
@@ -72,39 +75,72 @@ const Projects = () => {
     };
 
     return (
-        <div className="container App">
-            <br />
-            <br />
-            <h2>Add Tasks</h2>
-            <br />
-            <br />
+        <>
 
-            {updateData && updateData ? (
-                <UpdateForm
-                    updateData={updateData}
-                    changeTask={changeTask}
-                    updateTask={updateTask}
-                    cancelUpdate={cancelUpdate}
-                />
-            ) : (
-                <AddTaskForm
-                    newTask={newTask}
-                    setNewTask={setNewTask}
-                    addTask={addTask}
-                />
-            )}
+            <div className="flexbox-container">
+                <div className="sidebar" >
+            <CreateProject/>
+            <br></br><br></br>
+                <Table className="table" striped bordered hover >
+      <thead>
+        <tr>
+          <th>#</th>
+          <th>Project</th>
+          
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>1</td>
+          <td>1st project</td>
+          
+        </tr>
+        <tr>
+          <td>2</td>
+          <td>2nd Project</td>
+          
+        </tr>
+        
+      </tbody>
+    </Table>
+                </div>
+                <div className="main" >
+                    <div className="container App">
 
-            {/* Display ToDos */}
+                        <ProjectDescription/>
+                        <br />
+                        <br />
+                        <h2>Tasks</h2>
+                        
 
-            {toDo && toDo.length ? "" : "No Tasks..."}
+                        {updateData && updateData ? (
+                            <UpdateForm
+                                updateData={updateData}
+                                changeTask={changeTask}
+                                updateTask={updateTask}
+                                cancelUpdate={cancelUpdate}
+                            />
+                        ) : (
+                            <AddTaskForm
+                                newTask={newTask}
+                                setNewTask={setNewTask}
+                                addTask={addTask}
+                            />
+                        )}
 
-            <ToDo
-                toDo={toDo}
-                markDone={markDone}
-                setUpdateData={setUpdateData}
-                deleteTask={deleteTask}
-            />
-        </div>
+                        {/* Display ToDos */}
+
+                        {toDo && toDo.length ? "" : "No Tasks..."}
+
+                        <ToDo
+                            toDo={toDo}
+                            markDone={markDone}
+                            setUpdateData={setUpdateData}
+                            deleteTask={deleteTask}
+                        />
+                    </div>
+                </div>
+            </div></>
     );
 };
 

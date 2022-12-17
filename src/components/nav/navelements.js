@@ -7,7 +7,7 @@ export const Nav = styled.nav`
     height: 85px;
     display: flex;
     justify-content: space-between;
-    // position: fixed;
+    position: fixed;
     width: 100%;
     scroll-behavior: none;
     padding: 0.2rem calc((100vw - 1000px) / 2);

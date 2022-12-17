@@ -18,6 +18,9 @@ const ToDo = ({ toDo, markDone, setUpdateData, deleteTask }) => {
                 <span className="taskNumber">{index + 1}</span>
                 <span className="taskText">{task.title}</span>
               </div>
+              <span className='assignment'>Created by:</span>
+              <br></br>
+              <span className='assignment'>Assigned to:</span>
               <div className="iconsWrap">
                 <span title="Completed / Not Completed"
                   onClick={ (e) => markDone(task.id) }

@@ -13,10 +13,11 @@ import {
 import "bootstrap/dist/css/bootstrap.min.css";
 import "bootstrap/dist/js/bootstrap.bundle.min.js";
 import "./index.css";
+import { padding } from "@mui/system";
 
 export default function PersonalProfile() {
     return (
-        <section className="vh-100" style={{ backgroundColor: "#f4f5f7" }}>
+        <section className="vh-100" style={{ backgroundColor: "rgb(234, 241, 255)", padding: "10% 0%" }}>
             <MDBContainer className="py-5 h-100">
                 <MDBRow className="justify-content-center align-items-center h-100">
                     <MDBCol lg="6" className="mb-4 mb-lg-0">
