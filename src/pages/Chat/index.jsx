@@ -1,7 +1,5 @@
 import React, { useState, useEffect } from "react";
-
 import { StreamChat } from "stream-chat";
-
 import {
     Chat,
     Channel,

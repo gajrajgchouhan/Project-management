@@ -1,18 +1,16 @@
 import React, { useEffect, useState } from "react";
 import { validate } from "../../utils/validate";
-import "react-toastify/dist/ReactToastify.css";
 import styles from "./SignUp.module.css";
-import { ToastContainer } from "react-toastify";
+import { toast } from "react-toastify";
 import { Link } from "react-router-dom";
 
 const SignUp = () => {
     const [data, setData] = useState({
         name: "",
-        username:"",
+        username: "",
         email: "",
         password: "",
         confirmPassword: "",
-        IsAccepted: false,
     });
 
     const [errors, setErrors] = useState({});
@@ -23,11 +21,7 @@ const SignUp = () => {
     }, [data, touched]);
 
     const changeHandler = (event) => {
-        if (event.target.name === "IsAccepted") {
-            setData({ ...data, [event.target.name]: event.target.checked });
-        } else {
-            setData({ ...data, [event.target.name]: event.target.value });
-        }
+        setData({ ...data, [event.target.name]: event.target.value });
     };
 
     const focusHandler = (event) => {
@@ -36,7 +30,33 @@ const SignUp = () => {
 
     return (
         <div className={styles.container}>
-            <form className={styles.formLogin}>
+            <form
+                className={styles.formLogin}
+                onSubmit={async (e) => {
+                    e.preventDefault();
+                    console.log(data);
+                    const res = await fetch(
+                        "http://localhost:5000/auth/register",
+                        {
+                            method: "POST",
+                            headers: {
+                                "Content-Type": "application/json",
+                            },
+                            body: JSON.stringify({
+                                name: data.name,
+                                username: data.username,
+                                email: data.email,
+                                password: data.password,
+                            }),
+                        }
+                    );
+                    if (res.ok) {
+                        toast.success("Registration successful!");
+                    } else {
+                        toast.error("Something went wrong!");
+                    }
+                }}
+            >
                 <h1>Sign Up</h1>
 
                 <div>
@@ -190,7 +210,6 @@ const SignUp = () => {
                     </span>
                 </div>
             </form>
-            <ToastContainer />
         </div>
     );
 };

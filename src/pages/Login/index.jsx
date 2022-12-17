@@ -1,10 +1,11 @@
 import React, { useState } from "react";
-import "react-toastify/dist/ReactToastify.css";
-import styles from "./SignUp.module.css";
-import { ToastContainer } from "react-toastify";
+import styles from "../SignUp/SignUp.module.css";
 import { Link, useLocation, useNavigate } from "react-router-dom";
-
+import { setUser } from "../../store/user.slice";
+import { useDispatch } from "react-redux";
+import { toast } from "react-toastify";
 const Login = () => {
+    const dispatch = useDispatch();
     const nav = useNavigate();
     const loc = useLocation();
     const [data, setData] = useState({
@@ -16,9 +17,26 @@ const Login = () => {
         <div className={styles.container}>
             <form
                 className={styles.formLogin}
-                onSubmit={(e) => {
+                onSubmit={async (e) => {
                     e.preventDefault();
                     console.log(data);
+                    const res = await fetch(
+                        "http://localhost:5000/auth/login",
+                        {
+                            method: "POST",
+                            headers: {
+                                "Content-Type": "application/json",
+                            },
+                            body: JSON.stringify(data),
+                        }
+                    );
+                    if (res.ok) {
+                        const d = await res.json();
+                        dispatch(setUser(d.token));
+                        toast.success("Logged in!");
+                    } else {
+                        toast.error("Something went wrong!");
+                    }
                 }}
             >
                 <h1>Log In</h1>
@@ -75,7 +93,6 @@ const Login = () => {
                     </span>
                 </div>
             </form>
-            <ToastContainer />
         </div>
     );
 };
