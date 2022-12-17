@@ -1,10 +1,12 @@
 import React, { useState } from "react";
-import styles from "./SignUp.module.css";
-import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import { Link } from "react-router-dom";
+import styles from "./SignUp.module.css";
+import { ToastContainer } from "react-toastify";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 
 const Login = () => {
+    const nav = useNavigate();
+    const loc = useLocation();
     const [data, setData] = useState({
         email: "",
         password: "",
@@ -12,28 +14,45 @@ const Login = () => {
 
     return (
         <div className={styles.container}>
-            <form className={styles.formLogin} >
+            <form
+                className={styles.formLogin}
+                onSubmit={(e) => {
+                    e.preventDefault();
+                    console.log(data);
+                }}
+            >
                 <h1>Log In</h1>
                 <br></br>
                 <div>
                     <div>
-                        <label for="email">Email address{"\n"}</label>
-
+                        <label htmlFor="email">Email address{"\n"}</label>
                         <input
+                            value={data.email}
+                            onChange={(event) =>
+                                setData((v) => ({
+                                    ...v,
+                                    email: event.target.value,
+                                }))
+                            }
                             type="email"
                             name="email"
-                            
                             placeholder="Enter your E-mail id"
                         />
                     </div>
                 </div>
                 <div>
                     <div>
-                        <label for="password">Password</label>
+                        <label htmlFor="password">Password</label>
                         <input
+                            value={data.password}
+                            onChange={(event) =>
+                                setData((v) => ({
+                                    ...v,
+                                    password: event.target.value,
+                                }))
+                            }
                             type="password"
                             name="password"
-                            
                             placeholder="Enter your password"
                         />
                     </div>

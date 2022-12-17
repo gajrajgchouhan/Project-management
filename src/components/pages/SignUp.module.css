@@ -146,7 +146,6 @@
 .formLogin button[type="submit"] {
     display: block;
     text-align: center;
-    /* width: 100%; */
     border-radius: 8px;
     outline: 0;
     border: none;
@@ -156,15 +155,6 @@
     background: rgb(84, 185, 84);
     cursor: pointer;
     transition: all 0.3s ease-in-out;
-    -webkit-transition: all 0.3s ease-in-out;
-    -moz-transition: all 0.3s ease-in-out;
-    -ms-transition: all 0.3s ease-in-out;
-    -o-transition: all 0.3s ease-in-out;
-}
-
-.formLogin button[type="submit"]:hover {
-    background: var(--main-color-hover);
-    cursor: pointer;
 }
 
 .terms {
