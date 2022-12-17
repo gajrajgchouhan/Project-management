@@ -11,6 +11,10 @@ const projectSchema = new Schema({
         ref: "User",
         required: true,
     },
+    description: {
+        type: String,
+        required: true,
+    },
     team: {
         type: Schema.Types.ObjectId,
         ref: "Team",

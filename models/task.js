@@ -15,12 +15,23 @@ const taskSchema = new Schema({
         ref: "User",
         required: true,
     },
-    subtasks: [
-        {
-            type: Schema.Types.ObjectId,
-            ref: "SubTask",
-        },
-    ],
+    assigned_to: {
+        type: Schema.Types.ObjectId,
+        ref: "User",
+        required: false,
+        default: null,
+    },
+    complete: {
+        type: Boolean,
+        required: true,
+        default: false,
+    },
+    // subtasks: [
+    //     {
+    //         type: Schema.Types.ObjectId,
+    //         ref: "SubTask",
+    //     },
+    // ],
 });
 
 module.exports = mongoose.model("Task", taskSchema);
