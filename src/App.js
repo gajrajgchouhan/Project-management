@@ -1,18 +1,11 @@
 import React, { useState } from "react";
-import {
-    Navigate,
-    Outlet,
-    Route,
-    Routes,
-    useLocation,
-    useNavigate,
-} from "react-router-dom";
-import Feed from "./components/pages/Feed";
-import Projects from "./components/pages/Projects";
-import Profile from "./components/pages/Profile";
-import SignUp from "./components/pages/SignUp";
-import Login from "./components/pages/Login";
-import MyChat from "./components/pages/MyChat";
+import { Outlet, Route, Routes, useLocation } from "react-router-dom";
+import Feed from "./pages/Feed";
+import Projects from "./pages/Projects";
+import Profile from "./pages/Profile";
+import SignUp from "./pages/SignUp";
+import Login from "./pages/Login";
+import MyChat from "./pages/MyChat";
 import Navbar from "./components/nav/Navbar";
 
 const App = () => {
