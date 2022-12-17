@@ -8,6 +8,7 @@ import Profile from "./components/pages/Profile";
 import SignUp from "./components/SignUp";
 import Login from "./components/Login";
 import MyChat from "./components/pages/MyChat";
+import Footer from "./components/Footer";
 
 const App = () => {
     return (
@@ -23,6 +24,7 @@ const App = () => {
                     <Route path="/SignUp" component={SignUp} />
                 </Routes>
             </switch>
+            <Footer />
         </div>
     );
 };
