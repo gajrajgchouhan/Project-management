@@ -11,7 +11,7 @@ import MyChat from "./components/pages/MyChat";
 
 const App = () => {
     return (
-        <Router>
+        <div>
             <Navbar />
             <Routes>
                 <Route path="/Chat" element={<MyChat />} />
@@ -21,7 +21,7 @@ const App = () => {
                 <Route path="/Login" component={Login} />
                 <Route path="/SignUp" component={SignUp} />
             </Routes>
-        </Router>
+        </div>
     );
 };
 
