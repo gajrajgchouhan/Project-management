@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
 import Modal from 'react-bootstrap/Modal';
+import SelectUsers from './SelectUsers';
 
 function CreateProject() {
   
@@ -41,15 +42,12 @@ function CreateProject() {
                 autoFocus
               />
             </Form.Group>
-            {/* <Button onClick={handleClick}>Add</Button> */}
+            
+            {/* <SelectUser /> */}
             <Form.Group className="mb-3" controlId="createProject.ControlInput2">
-              <Form.Label>Email address</Form.Label>
-              <Form.Control
-                type="email"
-                name="email"
-                placeholder="name@example.com"
-                autoFocus
-              />
+              <Form.Label>Username</Form.Label>
+              <SelectUsers />
+              
             </Form.Group>
             <Form.Group
               className="mb-3"
