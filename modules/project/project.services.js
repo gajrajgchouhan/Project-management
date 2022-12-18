@@ -64,6 +64,24 @@ exports.addProjectService = async (req, res, next) => {
 
     await newProject.save();
 
+    await serverStreamClient.feed("colab_dev", newProject._id).addActivity({
+        actor: res.locals.user.id,
+        verb: "create",
+        object: newProject.name,
+        time: new Date(),
+    });
+
+    await Promise.all(
+        [...team, user.username].map(async (uname) => {
+            await serverStreamClient
+                .feed("colab_dev", uname)
+                .follow("colab_dev", newProject._id)
+                .catch((err) => {
+                    console.log(err);
+                });
+        })
+    );
+
     res.status(200).json({ message: "Project added successfully" });
 };
 
@@ -174,7 +192,32 @@ exports.getOneProjectService = async (req, res, next) => {
 
 exports.updateTaskService = async (req, res, next) => {
     const { id, ...attributes } = req.body;
-    const taskData = await taskModel.findByIdAndUpdate(id, attributes).exec();
+
+    if (
+        attributes["completed"] !== undefined &&
+        attributes["completed"] === true
+    ) {
+        // add to feed
+        await serverStreamClient.feed("colab_dev", id).addActivity({
+            actor: res.locals.user.id,
+            verb: "complete",
+            object: attributes["completed"],
+            time: new Date(),
+        });
+    }
+
+    if (attributes["assigned_to"] !== undefined) {
+        // add to feed
+        await serverStreamClient.feed("colab_dev", id).addActivity({
+            actor: res.locals.user.id,
+            verb: "assign",
+            object: attributes["assigned_to"],
+            time: new Date(),
+        });
+    }
+
+    await taskModel.findByIdAndUpdate(id, attributes).exec();
+
     res.status(200).json({ message: "Task updated successfully" });
 };
 
@@ -197,6 +240,19 @@ exports.addTaskToProjectService = async (req, res, next) => {
     projectData.tasks.push(newTask._id);
 
     await projectData.save();
+
+    await serverStreamClient.feed("colab_dev", newTask._id).addActivity({
+        actor: res.locals.user.id,
+        verb: "createTask",
+        object: newTask.name,
+        time: new Date(),
+    });
+
+    // project follows task
+
+    await serverStreamClient
+        .feed("colab_dev", projectId)
+        .follow("colab_dev", newTask._id);
 
     res.status(200).json({ message: "Task added successfully" });
 };
