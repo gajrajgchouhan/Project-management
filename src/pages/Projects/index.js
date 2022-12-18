@@ -10,6 +10,7 @@ import ProjectDescription from "./descriptionCard.js";
 import { useSelector } from "react-redux";
 import { Button, Card } from "react-bootstrap";
 import { Link } from "react-router-dom";
+import { toast } from "react-toastify";
 
 const Projects = () => {
     const userState = useSelector((state) => state.user);
@@ -79,7 +80,7 @@ const Projects = () => {
                 </div>
                 <div className="main">
                     <Project
-                        data={index !== null ? allProjects[index] : null}
+                        data={index === null ? null : allProjects[index]}
                     />
                 </div>
             </div>
@@ -88,19 +89,38 @@ const Projects = () => {
 };
 
 function Project({ data }) {
+    console.log(data);
+    const userState = useSelector((state) => state.user);
     // Tasks (ToDo List) State
     const [toDo, setToDo] = useState([]);
 
+    useEffect(() => {
+        setToDo(data?.tasks);
+        console.log("useEffect");
+    }, [data]);
+
     const [newTask, setNewTask] = useState("");
-    const [updateData, setUpdateData] = useState("");
+    const [updateData, setUpdateData] = useState(false);
 
     // Add task
-    const addTask = () => {
+    const addTask = async () => {
         if (newTask) {
-            let num = toDo.length + 1;
-            let newEntry = { id: num, title: newTask, status: false };
-            setToDo([...toDo, newEntry]);
-            setNewTask("");
+            const res = await fetch("http://localhost:5000/projects/addTask", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    Authorization: `${userState.user}`,
+                },
+                body: JSON.stringify({ projectId: data._id, name: newTask }),
+            });
+            if (res.ok) {
+                toast.success("Task added successfully");
+                setTimeout(() => {
+                    window.location.reload();
+                }, 500);
+            } else {
+                toast.error("Error adding task");
+            }
         }
     };
 
@@ -111,14 +131,26 @@ function Project({ data }) {
     };
 
     // Mark task as done or completed
-    const markDone = (id) => {
-        let newTask = toDo.map((task) => {
-            if (task.id === id) {
-                return { ...task, status: !task.status };
-            }
-            return task;
+    const markDone = async (id, index) => {
+        const res = await fetch("http://localhost:5000/projects/updateTask", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                Authorization: `${userState.user}`,
+            },
+            body: JSON.stringify({
+                id,
+                complete: !toDo[index].complete,
+            }),
         });
-        setToDo(newTask);
+        if (res.ok) {
+            toast.success("Task updated successfully");
+            setTimeout(() => {
+                window.location.reload();
+            }, 500);
+        } else {
+            toast.error("Error updating task!");
+        }
     };
 
     // Cancel update
@@ -178,13 +210,15 @@ function Project({ data }) {
                 />
             )}
 
-            {toDo && toDo.length ? "" : "No Tasks..."}
+            {toDo && toDo.length > 0 ? "" : "No Tasks..."}
 
             <ToDo
                 toDo={toDo}
                 markDone={markDone}
+                updateData={updateData}
                 setUpdateData={setUpdateData}
                 deleteTask={deleteTask}
+                members={data?.team?.members}
             />
         </div>
     );
