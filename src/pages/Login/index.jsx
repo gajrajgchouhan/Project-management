@@ -37,7 +37,7 @@ const Login = () => {
                         const d = await res.json();
                         dispatch(setUser(d));
                         toast.success("Logged in!");
-                        nav(loc.state?.from || "/");
+                        nav(loc.state?.from || "/projects");
                     } else {
                         toast.error("Something went wrong!");
                     }
