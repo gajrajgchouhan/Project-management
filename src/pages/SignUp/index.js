@@ -69,7 +69,7 @@ const SignUp = () => {
                                 : undefined
                         }
                     >
-                        <label for="name">Name</label>
+                        <label htmlFor="name">Name</label>
 
                         <input
                             type="text"
@@ -95,7 +95,7 @@ const SignUp = () => {
                                 : undefined
                         }
                     >
-                        <label for="username">Username</label>
+                        <label htmlFor="username">Username</label>
 
                         <input
                             type="text"
@@ -120,7 +120,7 @@ const SignUp = () => {
                                 : undefined
                         }
                     >
-                        <label for="email">Email</label>
+                        <label htmlFor="email">Email</label>
 
                         <input
                             type="email"
@@ -145,7 +145,7 @@ const SignUp = () => {
                                 : undefined
                         }
                     >
-                        <label for="password">Password</label>
+                        <label htmlFor="password">Password</label>
 
                         <input
                             type="password"
@@ -175,7 +175,7 @@ const SignUp = () => {
                                 : undefined
                         }
                     >
-                        <label for="password">Confirm Password</label>
+                        <label htmlFor="password">Confirm Password</label>
 
                         <input
                             type="password"

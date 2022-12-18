@@ -5,18 +5,11 @@ const Navbar = () => {
         <Nav>
             <Bars />
             <NavMenu>
-                <NavLink to="/Chat" activeStyle>
-                    Chat
-                </NavLink>
-                <NavLink to="/Feed" activeStyle>
-                    Feed
-                </NavLink>
-                <NavLink to="/Projects" activeStyle>
-                    Projects
-                </NavLink>
-                <NavLink to="/Profile" activeStyle>
-                    Profile
-                </NavLink>
+                <NavLink to="/Chat">Chat</NavLink>
+                <NavLink to="/Feed">Feed</NavLink>
+                <NavLink to="/Projects">Projects</NavLink>
+                <NavLink to="/Profile">Profile</NavLink>
+                <NavLink to="/logout">Logout</NavLink>
             </NavMenu>
         </Nav>
     );

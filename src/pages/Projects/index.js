@@ -1,14 +1,66 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useState } from "react";
 import AddTaskForm from "./AddTaskForm.jsx";
 import UpdateForm from "./UpdateForm.jsx";
 import ToDo from "./ToDo.jsx";
 import "./proj.css";
-import Table from 'react-bootstrap/Table';
+import Table from "react-bootstrap/Table";
 import CreateProject from "./createProject.js";
 import ProjectDescription from "./descriptionCard.js";
+import { useSelector } from "react-redux";
 
 const Projects = () => {
+    const userState = useSelector((state) => state.user);
+    const [allProjects, setAllProjects] = useState([]);
+    const [index, setIndex] = useState(null);
+
+    useEffect(async () => {
+        const res = await fetch("http://localhost:5000/projects/getAll", {
+            method: "GET",
+            headers: {
+                "Content-Type": "application/json",
+                Authorization: `${userState.user}`,
+            },
+        });
+        const d = await res.json();
+        setAllProjects(d);
+    }, []);
+
+    return (
+        <>
+            <div className="flexbox-container">
+                <div className="sidebar">
+                    <CreateProject />
+                    <br></br>
+                    <br></br>
+                    <Table className="table" striped bordered hover>
+                        <thead>
+                            <tr>
+                                <th>#</th>
+                                <th>Project</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {allProjects.map((project, index) => {
+                                return (
+                                    <tr onClick={() => setIndex(() => index)}>
+                                        <td>{index}</td>
+                                        <td>{project.name}</td>
+                                    </tr>
+                                );
+                            })}
+                        </tbody>
+                    </Table>
+                </div>
+                <div className="main">
+                    <Project index={index} />
+                </div>
+            </div>
+        </>
+    );
+};
+
+function Project({ index }) {
     // Tasks (ToDo List) State
     const [toDo, setToDo] = useState([]);
 
@@ -74,74 +126,42 @@ const Projects = () => {
         setUpdateData("");
     };
 
+    if (index === null) return <div></div>;
+
     return (
-        <>
+        <div className="container App">
+            <ProjectDescription />
+            <br />
+            <br />
+            <h2>Tasks</h2>
 
-            <div className="flexbox-container">
-                <div className="sidebar" >
-            <CreateProject/>
-            <br></br><br></br>
-                <Table className="table" striped bordered hover >
-      <thead>
-        <tr>
-          <th>#</th>
-          <th>Project</th>
-          
-        </tr>
-      </thead>
-      <tbody>
-        <tr>
-          <td>1</td>
-          <td>1st project</td>
-          
-        </tr>
-        <tr>
-          <td>2</td>
-          <td>2nd Project</td>
-          
-        </tr>
-        
-      </tbody>
-    </Table>
-                </div>
-                <div className="main" >
-                    <div className="container App">
+            {updateData && updateData ? (
+                <UpdateForm
+                    updateData={updateData}
+                    changeTask={changeTask}
+                    updateTask={updateTask}
+                    cancelUpdate={cancelUpdate}
+                />
+            ) : (
+                <AddTaskForm
+                    newTask={newTask}
+                    setNewTask={setNewTask}
+                    addTask={addTask}
+                />
+            )}
 
-                        <ProjectDescription/>
-                        <br />
-                        <br />
-                        <h2>Tasks</h2>
-                        
+            {/* Display ToDos */}
 
-                        {updateData && updateData ? (
-                            <UpdateForm
-                                updateData={updateData}
-                                changeTask={changeTask}
-                                updateTask={updateTask}
-                                cancelUpdate={cancelUpdate}
-                            />
-                        ) : (
-                            <AddTaskForm
-                                newTask={newTask}
-                                setNewTask={setNewTask}
-                                addTask={addTask}
-                            />
-                        )}
+            {toDo && toDo.length ? "" : "No Tasks..."}
 
-                        {/* Display ToDos */}
-
-                        {toDo && toDo.length ? "" : "No Tasks..."}
-
-                        <ToDo
-                            toDo={toDo}
-                            markDone={markDone}
-                            setUpdateData={setUpdateData}
-                            deleteTask={deleteTask}
-                        />
-                    </div>
-                </div>
-            </div></>
+            <ToDo
+                toDo={toDo}
+                markDone={markDone}
+                setUpdateData={setUpdateData}
+                deleteTask={deleteTask}
+            />
+        </div>
     );
-};
+}
 
 export default Projects;

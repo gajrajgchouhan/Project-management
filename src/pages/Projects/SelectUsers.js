@@ -1,62 +1,53 @@
-import React, { Component } from "react";
-import { default as ReactSelect } from "react-select";
-import { components } from "react-select";
-
-const Option = (props) => {
-  return (
-    <div>
-      <components.Option {...props}>
-        <input
-          type="checkbox"
-          checked={props.isSelected}
-          onChange={() => null}
-        />{" "}
-        <label>{props.label}</label>
-      </components.Option>
-    </div>
-  );
-};
-
-export default class SelectUsers extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      optionSelected: null
-    };
-  }
-
-  handleChange = (selected) => {
-    this.setState({
-      optionSelected: selected
-    });
-  };
-
-  render() {
+export default function SelectUsers({ data, setData }) {
     return (
-      <span
-        class="d-inline-block"
-        data-toggle="popover"
-        data-trigger="focus"
-        data-content="Please select account(s)"
-      >
-        <ReactSelect
-          options={[
-            { label: "User1", value: "u1" },
-            { label: "User2", value: "u2" },
-            { label: "User3", value: "u3" },
-            { label: "User4", value: "u4" },
-          ]}
-          isMulti
-          closeMenuOnSelect={false}
-          hideSelectedOptions={false}
-          components={{
-            Option
-          }}
-          onChange={this.handleChange}
-          allowSelectAll={true}
-          value={this.state.optionSelected}
-        />
-      </span>
+        <div>
+            {data.users.map((userName, index) => {
+                return (
+                    <div key={index}>
+                        <input
+                            type="text"
+                            name="userName"
+                            value={userName}
+                            onChange={(e) => {
+                                const newUserName = e.target.value;
+                                setData({
+                                    ...data,
+                                    users: data.users.map((userName, i) => {
+                                        if (i === index) {
+                                            return newUserName;
+                                        }
+                                        return userName;
+                                    }),
+                                });
+                            }}
+                        />
+                        {index > 0 && (
+                            <button
+                                onClick={() => {
+                                    setData({
+                                        ...data,
+                                        users: data.users.filter(
+                                            (_, i) => i !== index
+                                        ),
+                                    });
+                                }}
+                            >
+                                Delete
+                            </button>
+                        )}
+                        <button
+                            onClick={() => {
+                                setData({
+                                    ...data,
+                                    users: [...data.users, ""],
+                                });
+                            }}
+                        >
+                            Add
+                        </button>
+                    </div>
+                );
+            })}
+        </div>
     );
-  }
 }

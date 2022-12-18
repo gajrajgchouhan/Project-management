@@ -19,7 +19,6 @@ const Login = () => {
                 className={styles.formLogin}
                 onSubmit={async (e) => {
                     e.preventDefault();
-                    console.log(data);
                     const res = await fetch(
                         "http://localhost:5000/auth/login",
                         {
@@ -32,8 +31,9 @@ const Login = () => {
                     );
                     if (res.ok) {
                         const d = await res.json();
-                        dispatch(setUser(d.token));
+                        dispatch(setUser(d));
                         toast.success("Logged in!");
+                        nav(loc.state?.from || "/");
                     } else {
                         toast.error("Something went wrong!");
                     }

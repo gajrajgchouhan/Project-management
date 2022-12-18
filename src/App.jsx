@@ -6,6 +6,7 @@ import Profile from "./pages/Profile";
 import SignUp from "./pages/SignUp";
 import Login from "./pages/Login";
 import Chat from "./pages/Chat";
+import Logout from "./pages/Logout";
 import Navbar from "./components/nav";
 import { useSelector } from "react-redux";
 import { ToastContainer } from "react-toastify";
@@ -17,6 +18,7 @@ const App = () => {
             <Routes>
                 <Route path="/login" element={<Login />} />
                 <Route path="/signUp" element={<SignUp />} />
+                <Route path="/logout" element={<Logout />} />
                 <Route path="/" element={<Layout />}>
                     <Route path="/feed" element={<Feed />} />
                     <Route path="/chat" element={<Chat />} />
@@ -35,15 +37,11 @@ function useAuth() {
 }
 
 function Layout() {
-    console.log("in layout");
     const auth = useAuth();
-    console.log(auth);
     const loc = useLocation();
-    if (!auth.user) {
-        console.log("to login");
+    if (!auth?.user) {
         return <Navigate to="/login" state={{ from: loc }} replace />;
     }
-    console.log("logged in!");
     return (
         <div>
             <Navbar />
