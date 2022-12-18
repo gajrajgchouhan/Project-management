@@ -4,6 +4,7 @@ import { Link, useLocation, useNavigate } from "react-router-dom";
 import { setUser } from "../../store/user.slice";
 import { useDispatch } from "react-redux";
 import { toast } from "react-toastify";
+import logo from "../logo.png";
 const Login = () => {
     const dispatch = useDispatch();
     const nav = useNavigate();
@@ -42,7 +43,9 @@ const Login = () => {
                     }
                 }}
             >
-                <h1>Log In</h1>
+                <h2>
+                    Log In <img src={logo} style={{ height: "50px", width: "auto" }} className='navbar-logo' />
+                </h2>
                 <br></br>
                 <div>
                     <div>
