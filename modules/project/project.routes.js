@@ -9,11 +9,7 @@ const utils = require("./project.utils");
  */
 module.exports = (app) => {
     app.post(`${prefix}/add`, utils.jwtMiddleware, controller.addProject);
-    app.post(
-        `${prefix}/getAll`,
-        utils.jwtMiddleware,
-        controller.getAllProjects
-    );
+    app.get(`${prefix}/getAll`, utils.jwtMiddleware, controller.getAllProjects);
     app.post(`${prefix}/getOne`, utils.jwtMiddleware, controller.getOneProject);
     app.post(
         `${prefix}/updateTask`,

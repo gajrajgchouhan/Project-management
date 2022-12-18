@@ -1,7 +1,6 @@
 const userModel = require("../../models/user");
 const project = require("../../models/project");
 const taskModel = require("../../models/task");
-const subtaskModel = require("../../models/subtask");
 const teamModel = require("../../models/team");
 const { default: mongoose } = require("mongoose");
 
@@ -13,26 +12,10 @@ const serverStreamClient = stream.connect(
     process.env.API_SECRET
 );
 
-// const serverChatClient = StreamChat.getInstance(
-//     process.env.API_KEY,
-//     process.env.API_SECRET
-// );
-
-// const channel = serverChatClient.channel("messaging", {
-//     name: "Project 1",
-//     members: ["thierry", "tommaso"],
-//     created_by_id: "myuserid",
-// });
-// await channel.create();
-
-// const channels = await serverChatClient.queryChannels(
-//     { type: "messaging", members: { $in: ["thierry"] } },
-//     [{ last_message_at: -1 }],
-//     {
-//         watch: true, // this is the default
-//         state: true,
-//     }
-// );
+const serverChatClient = StreamChat.getInstance(
+    process.env.API_KEY,
+    process.env.API_SECRET
+);
 
 exports.addProjectService = async (req, res, next) => {
     const { name, description, team } = req.body;
@@ -54,17 +37,25 @@ exports.addProjectService = async (req, res, next) => {
 
     const teamId = await teamModel.create({
         members: userIds,
-        created_by: req.locals.user.id,
+        created_by: res.locals.user.id,
     });
 
     await teamId.save();
 
+    const channel = serverChatClient.channel("messaging", {
+        name,
+        members: teamId.members,
+        created_by_id: res.locals.user.id,
+    });
+    await channel.create();
+
     const newProject = new project({
         name,
-        created_by: req.locals.user.id,
+        created_by: res.locals.user.id,
         description,
         team: teamId._id,
         tasks: [],
+        channelId: channel.id,
     });
 
     await newProject.save();
@@ -73,7 +64,7 @@ exports.addProjectService = async (req, res, next) => {
 };
 
 exports.getAllProjectsService = async (req, res, next) => {
-    const { user } = req.locals;
+    const { user } = res.locals;
 
     // get id of all teams
     const teams = await teamModel
@@ -102,9 +93,12 @@ exports.getAllProjectsService = async (req, res, next) => {
 
     // get id of all projects from teams
     const projects = await project
-        .find({
-            $or: [{ team: { $in: teams } }],
-        })
+        .find(
+            {
+                $or: [{ team: { $in: teams } }],
+            },
+            { channelId: 0 }
+        )
         .populate("team")
         .populate("tasks")
         .exec();
@@ -131,4 +125,18 @@ exports.updateTaskService = async (req, res, next) => {
     const { id, ...attributes } = req.body;
     const taskData = await taskModel.findByIdAndUpdate(id, attributes).exec();
     res.status(200).json({ message: "Task updated successfully" });
+};
+
+exports.getChatService = async (req, res, next) => {
+    const channels = await serverChatClient.queryChannels(
+        { type: "messaging", members: { $in: [res.locals.user.id] } },
+        [{ last_message_at: -1 }],
+        {
+            watch: true, // this is the default
+            state: true,
+        }
+    );
+    res.status(200).json({
+        channels: channels.map((channel) => channel.data.cid),
+    });
 };

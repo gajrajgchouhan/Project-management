@@ -11,7 +11,10 @@ exports.jwtMiddleware = (req, res, next) => {
             res.status(401).json({ message: "Failed to authenticate token" });
             return;
         }
-        req.locals.user = decoded.user;
+        console.log({ decoded });
+        res.locals.user = { id: decoded.user };
+        // res.locals.chatToken = decoded.chatToken;
+        // res.locals.feedToken = decoded.feedToken;
         next();
     });
 };

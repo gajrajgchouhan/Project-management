@@ -26,6 +26,10 @@ const projectSchema = new Schema({
             ref: "Task",
         },
     ],
+    channelId: {
+        type: String,
+        required: true,
+    },
 });
 
 module.exports = mongoose.model("Project", projectSchema);

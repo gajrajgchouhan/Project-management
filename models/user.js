@@ -11,13 +11,21 @@ const userSchema = new Schema({
         required: true,
     },
     email: {
-        type: String, // TODO: add email validator
+        type: String,
         required: true,
     },
     password: {
         type: String,
         required: true,
     },
+    // chatToken: {
+    //     type: String,
+    //     required: true,
+    // },
+    // feedToken: {
+    //     type: String,
+    //     required: true,
+    // },
 });
 
 module.exports = mongoose.model("User", userSchema);

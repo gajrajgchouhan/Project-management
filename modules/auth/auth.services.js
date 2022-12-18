@@ -1,17 +1,21 @@
-const user = require("../../models/user");
+const userModal = require("../../models/user");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
-const StreamChat = require("stream-chat").StreamChat;
 
-// const serverClient = StreamChat.getInstance(
-//     process.env.API_KEY,
-//     process.env.API_SECRET
-// );
+const stream = require("getstream");
+
+require("dotenv").config();
+
+console.log(process.env.API_KEY, process.env.API_SECRET);
+
+const serverStreamClient = stream.connect(
+    process.env.API_KEY,
+    process.env.API_SECRET
+);
 
 exports.loginService = async (req, res, next) => {
     const { email, password } = req.body;
-    console.log(req.body);
-    const isUser = await user.findOne({ email });
+    const isUser = await userModal.findOne({ email });
 
     if (!isUser) {
         return res.status(404).json({
@@ -19,6 +23,8 @@ exports.loginService = async (req, res, next) => {
             message: "User not found",
         });
     }
+
+    console.log("user found");
 
     const isMatch = await bcrypt.compare(password, isUser.password);
 
@@ -29,13 +35,15 @@ exports.loginService = async (req, res, next) => {
         });
     }
 
+    console.log("password is valid");
+
     const payload = {
-        user: {
-            id: isUser.id,
-        },
+        user: isUser.id,
     };
 
-    // const token = serverClient.createToken("john");
+    const chatToken = serverStreamClient.createUserToken(isUser.username);
+
+    console.log(chatToken);
 
     jwt.sign(
         payload,
@@ -46,8 +54,8 @@ exports.loginService = async (req, res, next) => {
         (err, token) => {
             if (err) throw err;
             res.status(200).json({
-                success: true,
-                token,
+                user: token,
+                chatToken,
             });
         }
     );
@@ -56,7 +64,7 @@ exports.loginService = async (req, res, next) => {
 exports.registerService = async (req, res, next) => {
     const { name, username, email, password } = req.body;
 
-    const isUser = await user.findOne({ $or: [{ username }, { email }] });
+    const isUser = await userModal.findOne({ $or: [{ username }, { email }] });
 
     if (isUser) {
         return res.status(400).json({
@@ -68,7 +76,7 @@ exports.registerService = async (req, res, next) => {
     const salt = await bcrypt.genSalt(10);
     const hashedPassword = await bcrypt.hash(password, salt);
 
-    const newUser = new user({
+    const newUser = new userModal({
         name,
         username,
         email,
@@ -80,4 +88,19 @@ exports.registerService = async (req, res, next) => {
     return res.status(200).json({
         success: true,
     });
+};
+
+exports.getProfileService = async (req, res, next) => {
+    const { user } = res.locals;
+
+    const isUser = await userModal.findById(user.id).select("-password");
+
+    if (!isUser) {
+        return res.status(404).json({
+            success: false,
+            message: "User not found",
+        });
+    }
+
+    return res.status(200).json({ id: isUser.username, name: isUser.name });
 };
