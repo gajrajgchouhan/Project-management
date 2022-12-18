@@ -1,13 +1,15 @@
 .formLogin {
+    margin-top: 5%;
     background: rgb(201, 212, 243);
     box-shadow: var(--box-shadow);
     border: 1px solid var(--secondary-color);
     /* padding: 25px; */
     border-radius: 11px;
-    min-width: 500px;
+    min-width: 600px;
     padding: 2% 4%;
     /* border-radius: 5%; */
     width: 40%;
+    margin-bottom: 4%;
 }
 
 .container {
@@ -15,6 +17,7 @@
     justify-content: center;
     align-items: center;
     min-height: 100vh;
+    background-color:  rgb(234, 241, 255);
 }
 
 .formLogin > h2 {
