@@ -104,13 +104,57 @@ exports.getAllProjectsService = async (req, res, next) => {
             },
             { channelId: 0 }
         )
-        .populate("team")
-        .populate("team.members")
-        .populate("tasks")
-        .populate("created_by", { password: 0, __v: 0 })
         .exec();
 
-    res.status(200).json({ projects });
+    // .populate({
+    //         path: "team",
+    //         model: "Team",
+    //         populate: {
+    //             path: ["members", "created_by"],
+    //             model: "User",
+    //             select: { password: 0, __v: 0 },
+    //         },
+    //     })
+    //     .populate({
+    //         path: "tasks",
+    //         model: "Task",
+    //         populate: {
+    //             path: ["created_by", "assigned_to"],
+    //             model: "User",
+    //             select: { password: 0, __v: 0 },
+    //         },
+    //     })
+
+    const projects2 = await project.populate(projects, [
+        {
+            path: "team",
+            populate: [
+                {
+                    path: "members",
+                    select: { password: 0, __v: 0 },
+                },
+                {
+                    path: "created_by",
+                    select: { password: 0, __v: 0 },
+                },
+            ],
+        },
+        {
+            path: "tasks",
+            populate: [
+                {
+                    path: "created_by",
+                    select: { password: 0, __v: 0 },
+                },
+                {
+                    path: "created_by",
+                    select: { password: 0, __v: 0 },
+                },
+            ],
+        },
+    ]);
+
+    res.status(200).json({ projects: projects2 });
 };
 
 exports.getOneProjectService = async (req, res, next) => {
@@ -132,6 +176,29 @@ exports.updateTaskService = async (req, res, next) => {
     const { id, ...attributes } = req.body;
     const taskData = await taskModel.findByIdAndUpdate(id, attributes).exec();
     res.status(200).json({ message: "Task updated successfully" });
+};
+
+exports.addTaskToProjectService = async (req, res, next) => {
+    const { projectId, name } = req.body;
+
+    const projectData = await project.findById(projectId).exec();
+
+    if (projectData === null) {
+        return res.status(404).json({ message: "Project not found" });
+    }
+
+    const newTask = new taskModel({
+        name,
+        created_by: res.locals.user.id,
+    });
+
+    await newTask.save();
+
+    projectData.tasks.push(newTask._id);
+
+    await projectData.save();
+
+    res.status(200).json({ message: "Task added successfully" });
 };
 
 exports.getChatService = async (req, res, next) => {

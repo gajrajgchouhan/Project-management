@@ -68,3 +68,20 @@ exports.updateTask = async (req, res, next) => {
         next(error);
     }
 };
+
+/**
+ *
+ * @param {express.Request} req
+ * @param {express.Response} res
+ * @param {express.NextFunction} next
+ * @returns
+ */
+exports.addTaskToProject = async (req, res, next) => {
+    try {
+        return await projectServices.addTaskToProjectService(req, res, next);
+    } catch (error) {
+        console.log(error.stack);
+        res.status(500).json({ message: error.message });
+        next(error);
+    }
+};

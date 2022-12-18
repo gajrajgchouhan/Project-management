@@ -12,6 +12,11 @@ module.exports = (app) => {
     app.get(`${prefix}/getAll`, utils.jwtMiddleware, controller.getAllProjects);
     app.post(`${prefix}/getOne`, utils.jwtMiddleware, controller.getOneProject);
     app.post(
+        `${prefix}/addTask`,
+        utils.jwtMiddleware,
+        controller.addTaskToProject
+    );
+    app.post(
         `${prefix}/updateTask`,
         utils.jwtMiddleware,
         controller.updateTask
