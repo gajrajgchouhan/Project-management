@@ -91,12 +91,10 @@ function Project({ data }) {
     // Tasks (ToDo List) State
     const [toDo, setToDo] = useState([]);
 
-    // Temp State
     const [newTask, setNewTask] = useState("");
     const [updateData, setUpdateData] = useState("");
 
     // Add task
-    ///////////////////////////
     const addTask = () => {
         if (newTask) {
             let num = toDo.length + 1;
@@ -107,14 +105,12 @@ function Project({ data }) {
     };
 
     // Delete task
-    ///////////////////////////
     const deleteTask = (id) => {
         let newTasks = toDo.filter((task) => task.id !== id);
         setToDo(newTasks);
     };
 
     // Mark task as done or completed
-    ///////////////////////////
     const markDone = (id) => {
         let newTask = toDo.map((task) => {
             if (task.id === id) {
@@ -126,13 +122,11 @@ function Project({ data }) {
     };
 
     // Cancel update
-    ///////////////////////////
     const cancelUpdate = () => {
         setUpdateData("");
     };
 
     // Change task for update
-    ///////////////////////////
     const changeTask = (e) => {
         let newEntry = {
             id: updateData.id,
@@ -143,7 +137,6 @@ function Project({ data }) {
     };
 
     // Update task
-    ///////////////////////////
     const updateTask = () => {
         let filterRecords = [...toDo].filter(
             (task) => task.id !== updateData.id
@@ -161,8 +154,7 @@ function Project({ data }) {
                 <Card.Body>
                     <Card.Title>{data.name}</Card.Title>
                     <Card.Subtitle className="mb-2 text-muted">
-                        Created by:
-                        {/* TODO */}
+                        Created by: <strong> {data.created_by.username}</strong>
                     </Card.Subtitle>
                     <Card.Text>{data.description}</Card.Text>
                 </Card.Body>
@@ -170,7 +162,7 @@ function Project({ data }) {
             <br />
             <br />
             <h2>Tasks</h2>
-            {/* 
+
             {updateData && updateData ? (
                 <UpdateForm
                     updateData={updateData}
@@ -193,7 +185,7 @@ function Project({ data }) {
                 markDone={markDone}
                 setUpdateData={setUpdateData}
                 deleteTask={deleteTask}
-            /> */}
+            />
         </div>
     );
 }
