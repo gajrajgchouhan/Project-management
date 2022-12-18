@@ -3,6 +3,7 @@ import { validate } from "../../utils/validate";
 import styles from "./SignUp.module.css";
 import { toast } from "react-toastify";
 import { Link } from "react-router-dom";
+import logo from "../logo.png";
 
 const SignUp = () => {
     const [data, setData] = useState({
@@ -57,7 +58,9 @@ const SignUp = () => {
                     }
                 }}
             >
-                <h1>Sign Up</h1>
+                <h2>
+                Sign Up <img src={logo} style={{ height: "50px", width: "auto" }} className='navbar-logo' />
+                </h2>
 
                 <div>
                     <div
