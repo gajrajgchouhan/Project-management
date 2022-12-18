@@ -50,19 +50,14 @@ const Feed = () => {
             appId={"1224567"}
             apiKey={apiKey}
         >
-            <ActivityKiFeed feedGroup="colab_dev">
-                <FlatFeed
-                    Activity={<FeedBlock />}
-                    userId={user.current.username}
-                />
-            </ActivityKiFeed>
+            <FlatFeed feedGroup="colab_dev" userId={user.current.username} />
         </StreamApp>
     );
 };
 
 function FeedBlock({ activity }) {
     const actor = activity.actor;
-    console.log(actor);
+    console.log(activity);
     return <div></div>;
 }
 

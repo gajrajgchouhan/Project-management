@@ -37,7 +37,7 @@ const SignUp = () => {
                     e.preventDefault();
                     console.log(data);
                     const res = await fetch(
-                        "http://BASE_URL/auth/register",
+                        "http://localhost:5000/auth/register",
                         {
                             method: "POST",
                             headers: {
@@ -59,7 +59,12 @@ const SignUp = () => {
                 }}
             >
                 <h2>
-                Sign Up <img src={logo} style={{ height: "50px", width: "auto" }} className='navbar-logo' />
+                    Sign Up{" "}
+                    <img
+                        src={logo}
+                        style={{ height: "50px", width: "auto" }}
+                        className="navbar-logo"
+                    />
                 </h2>
 
                 <div>

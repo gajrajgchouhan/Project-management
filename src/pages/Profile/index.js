@@ -1,4 +1,4 @@
-import React, { useRef } from "react";
+import React, { useRef, useState } from "react";
 import {
     MDBCol,
     MDBContainer,
@@ -13,20 +13,17 @@ import {
 import "bootstrap/dist/css/bootstrap.min.css";
 import "bootstrap/dist/js/bootstrap.bundle.min.js";
 import "./index.css";
-import { padding } from "@mui/system";
-import { useState, useEffect} from "react";
+import { useEffect } from "react";
 import { useSelector } from "react-redux";
 
 export default function PersonalProfile() {
-    
     // const [channel, setChannel] = useState(null);
     const userState = useSelector((state) => state.user);
-    const user = useRef(null);
+    const [user, setUser] = useState(null);
 
     useEffect(() => {
         async function init() {
-
-            const res = await fetch("http://BASE_URL/auth/getProfile", {
+            const res = await fetch("http://localhost:5000/auth/getProfile", {
                 method: "GET",
                 headers: {
                     "Content-Type": "application/json",
@@ -34,17 +31,21 @@ export default function PersonalProfile() {
                 },
             });
             const d = await res.json();
-            user.current = d;
-            
+            setUser(d);
         }
 
         init();
-
-        
     }, []);
 
+    if (user === null) {
+        return <div>Loading...</div>;
+    }
+
     return (
-        <section className="vh-100" style={{ backgroundColor: "rgb(234, 241, 255)", padding: "10% 0%" }}>
+        <section
+            className="vh-100"
+            style={{ backgroundColor: "rgb(234, 241, 255)", padding: "10% 0%" }}
+        >
             <MDBContainer className="py-5 h-100">
                 <MDBRow className="justify-content-center align-items-center h-100">
                     <MDBCol lg="6" className="mb-4 mb-lg-0">
@@ -69,7 +70,7 @@ export default function PersonalProfile() {
                                         fluid
                                     />
                                     <MDBTypography tag="h5">
-                                    {user.current.name}
+                                        {user.name}
                                     </MDBTypography>
                                     <MDBCardText>Developer</MDBCardText>
                                     <MDBIcon far icon="edit mb-5" />
@@ -81,26 +82,23 @@ export default function PersonalProfile() {
                                         </MDBTypography>
                                         <hr className="mt-0 mb-4" />
                                         <MDBRow className="pt-1">
-                                            
                                             <MDBCol size="6" className="mb-3">
                                                 <MDBTypography tag="h6">
                                                     Username
                                                 </MDBTypography>
                                                 <MDBCardText className="text-muted">
-                                                    {user.current.id}
+                                                    {user.id}
                                                 </MDBCardText>
                                             </MDBCol>
                                         </MDBRow>
 
-                                        
                                         <MDBRow className="pt-1">
-                                        <MDBCol size="6" className="mb-3">
+                                            <MDBCol size="6" className="mb-3">
                                                 <MDBTypography tag="h6">
                                                     Email
                                                 </MDBTypography>
                                                 <MDBCardText className="text-muted">
-                                                {user.current.email}
-
+                                                    {user.email}
                                                 </MDBCardText>
                                             </MDBCol>
                                         </MDBRow>

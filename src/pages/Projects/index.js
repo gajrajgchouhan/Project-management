@@ -20,7 +20,7 @@ const Projects = () => {
     useEffect(() => {
         const init = async () => {
             console.log(userState);
-            const res = await fetch("http://BASE_URL/projects/getAll", {
+            const res = await fetch("http://localhost:5000/projects/getAll", {
                 method: "GET",
                 headers: {
                     "Content-Type": "application/json",
@@ -105,7 +105,7 @@ function Project({ data }) {
     // Add task
     const addTask = async () => {
         if (newTask) {
-            const res = await fetch("http://BASE_URL/projects/addTask", {
+            const res = await fetch("http://localhost:5000/projects/addTask", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
@@ -132,7 +132,7 @@ function Project({ data }) {
 
     // Mark task as done or completed
     const markDone = async (id, index) => {
-        const res = await fetch("http://BASE_URL/projects/updateTask", {
+        const res = await fetch("http://localhost:5000/projects/updateTask", {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",

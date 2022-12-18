@@ -43,7 +43,7 @@ function CreateProject() {
                         onSubmit={async (e) => {
                             e.preventDefault();
                             const res = await fetch(
-                                "http://BASE_URL/projects/add",
+                                "http://localhost:5000/projects/add",
                                 {
                                     method: "POST",
                                     headers: {
