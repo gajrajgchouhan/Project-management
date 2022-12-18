@@ -24,7 +24,7 @@ const Login = () => {
                 onSubmit={async (e) => {
                     e.preventDefault();
                     const res = await fetch(
-                        "http://localhost:5000/auth/login",
+                        "http://BASE_URL/auth/login",
                         {
                             method: "POST",
                             headers: {

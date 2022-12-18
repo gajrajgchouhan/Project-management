@@ -19,7 +19,7 @@ const Projects = () => {
     useEffect(() => {
         const init = async () => {
             console.log(userState);
-            const res = await fetch("http://localhost:5000/projects/getAll", {
+            const res = await fetch("http://BASE_URL/projects/getAll", {
                 method: "GET",
                 headers: {
                     "Content-Type": "application/json",

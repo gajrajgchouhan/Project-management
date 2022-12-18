@@ -37,7 +37,7 @@ const SignUp = () => {
                     e.preventDefault();
                     console.log(data);
                     const res = await fetch(
-                        "http://localhost:5000/auth/register",
+                        "http://BASE_URL/auth/register",
                         {
                             method: "POST",
                             headers: {
