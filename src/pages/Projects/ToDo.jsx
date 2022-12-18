@@ -3,11 +3,35 @@ import Form from 'react-bootstrap/Form';
 import Col from 'react-bootstrap/Col';
 import Row from 'react-bootstrap/Row';
 
-
+import { useState } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import {
   faCircleCheck, faPen, faTrashCan
 } from '@fortawesome/free-solid-svg-icons'
+
+
+const ChooseUser = () => {
+
+  const [isDisabled, setIsDisabled] = useState(true);
+  const handleClick = () => {
+    setIsDisabled(!isDisabled)
+  };
+  return (
+    <>
+      <Form.Select aria-label="Choose collaborator" disabled={isDisabled}>
+        <option>Choose collaborator</option>
+        <option value="1">User1</option>
+        <option value="2">User2</option>
+        <option value="3">User3</option>
+      </Form.Select>
+      <button onClick={handleClick} className="btn btn-lg">
+        <FontAwesomeIcon icon={faPen} />
+
+      </button >
+    </>
+
+  );
+}
 
 const ToDo = ({ toDo, markDone, setUpdateData, deleteTask }) => {
   return (
@@ -17,6 +41,7 @@ const ToDo = ({ toDo, markDone, setUpdateData, deleteTask }) => {
         .map((task, index) => {
           return (
             <React.Fragment key={task.id}>
+
               <div className="col taskBg">
                 <div className={task.status ? 'done' : ''}>
                   <span className="taskNumber">{index + 1}</span>
@@ -30,14 +55,18 @@ const ToDo = ({ toDo, markDone, setUpdateData, deleteTask }) => {
                     Assigned to:
                   </Form.Label>
                   <Col sm="8">
-                    <Form.Select aria-label="Choose collaborator" >
+                    <ChooseUser />
+
+
+                    {/* <Form.Select aria-label="Choose collaborator" disabled="true" value={assigned-to}>
                       <option>Choose collaborator</option>
                       <option value="1">User1</option>
                       <option value="2">User2</option>
                       <option value="3">User3</option>
-                    </Form.Select>
+                    </Form.Select> */}
                   </Col>
                 </Form.Group>
+
                 <div className="iconsWrap">
                   <span title="Completed / Not Completed"
                     onClick={(e) => markDone(task.id)}
@@ -50,8 +79,10 @@ const ToDo = ({ toDo, markDone, setUpdateData, deleteTask }) => {
                       onClick={() => setUpdateData({
                         id: task.id,
                         title: task.title,
-                        status: task.status ? true : false
-                      })}
+                        status: task.status ? true : false,
+                      }
+                      )
+                      }
                     >
                       <FontAwesomeIcon icon={faPen} />
                     </span>
