@@ -28,7 +28,7 @@ const MyChat = () => {
         async function init() {
             const chatClient = StreamChat.getInstance(apiKey);
 
-            const res = await fetch("http://localhost:5000/auth/getProfile", {
+            const res = await fetch("http://BASE_URL/auth/getProfile", {
                 method: "GET",
                 headers: {
                     "Content-Type": "application/json",

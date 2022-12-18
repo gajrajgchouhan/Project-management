@@ -24,7 +24,7 @@ const Login = () => {
                 onSubmit={async (e) => {
                     e.preventDefault();
                     const res = await fetch(
-                        "http://localhost:5000/auth/login",
+                        "http://BASE_URL/auth/login",
                         {
                             method: "POST",
                             headers: {
@@ -37,7 +37,7 @@ const Login = () => {
                         const d = await res.json();
                         dispatch(setUser(d));
                         toast.success("Logged in!");
-                        nav(loc.state?.from || "/");
+                        nav(loc.state?.from || "/projects");
                     } else {
                         toast.error("Something went wrong!");
                     }
