@@ -96,6 +96,10 @@ exports.registerService = async (req, res, next) => {
         name,
     });
 
+    await serverStreamClient.user(username).getOrCreate({
+        name,
+    });
+
     return res.status(200).json({
         success: true,
     });
@@ -113,5 +117,12 @@ exports.getProfileService = async (req, res, next) => {
         });
     }
 
-    return res.status(200).json({ id: isUser.username, name: isUser.name , email: isUser.email});
+    return res
+        .status(200)
+        .json({
+            id: isUser.username,
+            name: isUser.name,
+            email: isUser.email,
+            username: isUser.username,
+        });
 };
