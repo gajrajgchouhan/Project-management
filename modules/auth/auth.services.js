@@ -113,5 +113,5 @@ exports.getProfileService = async (req, res, next) => {
         });
     }
 
-    return res.status(200).json({ id: isUser.username, name: isUser.name });
+    return res.status(200).json({ id: isUser.username, name: isUser.name , email: isUser.email});
 };
