@@ -1,10 +1,22 @@
+import Button from "react-bootstrap/Button";
+import Form from "react-bootstrap/Form";
+
 export default function SelectUsers({ data, setData }) {
     return (
         <div>
-            {data.users.map((userName, index) => {
+            {data.team.map((userName, index) => {
                 return (
-                    <div key={index}>
-                        <input
+                    <div
+                        key={index}
+                        style={{
+                            display: "flex",
+                            flexDirection: "row",
+                            gap: "7px",
+                            marginTop: "7px",
+                            marginBottom: "7px",
+                        }}
+                    >
+                        <Form.Control
                             type="text"
                             name="userName"
                             value={userName}
@@ -12,7 +24,7 @@ export default function SelectUsers({ data, setData }) {
                                 const newUserName = e.target.value;
                                 setData({
                                     ...data,
-                                    users: data.users.map((userName, i) => {
+                                    team: data.team.map((userName, i) => {
                                         if (i === index) {
                                             return newUserName;
                                         }
@@ -22,29 +34,31 @@ export default function SelectUsers({ data, setData }) {
                             }}
                         />
                         {index > 0 && (
-                            <button
+                            <Button
+                                variant="success"
                                 onClick={() => {
                                     setData({
                                         ...data,
-                                        users: data.users.filter(
+                                        team: data.team.filter(
                                             (_, i) => i !== index
                                         ),
                                     });
                                 }}
                             >
                                 Delete
-                            </button>
+                            </Button>
                         )}
-                        <button
+                        <Button
+                            variant="success"
                             onClick={() => {
                                 setData({
                                     ...data,
-                                    users: [...data.users, ""],
+                                    team: [...data.team, ""],
                                 });
                             }}
                         >
                             Add
-                        </button>
+                        </Button>
                     </div>
                 );
             })}

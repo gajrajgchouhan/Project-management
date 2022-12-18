@@ -8,29 +8,49 @@ import Table from "react-bootstrap/Table";
 import CreateProject from "./createProject.js";
 import ProjectDescription from "./descriptionCard.js";
 import { useSelector } from "react-redux";
+import { Button, Card } from "react-bootstrap";
+import { Link } from "react-router-dom";
 
 const Projects = () => {
     const userState = useSelector((state) => state.user);
     const [allProjects, setAllProjects] = useState([]);
     const [index, setIndex] = useState(null);
 
-    useEffect(async () => {
-        const res = await fetch("http://localhost:5000/projects/getAll", {
-            method: "GET",
-            headers: {
-                "Content-Type": "application/json",
-                Authorization: `${userState.user}`,
-            },
-        });
-        const d = await res.json();
-        setAllProjects(d);
+    useEffect(() => {
+        const init = async () => {
+            console.log(userState);
+            const res = await fetch("http://localhost:5000/projects/getAll", {
+                method: "GET",
+                headers: {
+                    "Content-Type": "application/json",
+                    Authorization: userState.user,
+                },
+            });
+            const d = await res.json();
+            setAllProjects(d.projects);
+        };
+        init();
     }, []);
 
     return (
         <>
             <div className="flexbox-container">
                 <div className="sidebar">
-                    <CreateProject />
+                    <div
+                        style={{
+                            display: "flex",
+                            justifyContent: "end",
+                            alignItems: "center",
+                            gap: "5px",
+                        }}
+                    >
+                        <CreateProject />
+                        <Button type="button" variant="link">
+                            <Link to="/projects" replace>
+                                Refresh
+                            </Link>
+                        </Button>
+                    </div>
                     <br></br>
                     <br></br>
                     <Table className="table" striped bordered hover>
@@ -43,7 +63,12 @@ const Projects = () => {
                         <tbody>
                             {allProjects.map((project, index) => {
                                 return (
-                                    <tr onClick={() => setIndex(() => index)}>
+                                    <tr
+                                        style={{
+                                            cursor: "pointer",
+                                        }}
+                                        onClick={() => setIndex(() => index)}
+                                    >
                                         <td>{index}</td>
                                         <td>{project.name}</td>
                                     </tr>
@@ -53,14 +78,16 @@ const Projects = () => {
                     </Table>
                 </div>
                 <div className="main">
-                    <Project index={index} />
+                    <Project
+                        data={index !== null ? allProjects[index] : null}
+                    />
                 </div>
             </div>
         </>
     );
 };
 
-function Project({ index }) {
+function Project({ data }) {
     // Tasks (ToDo List) State
     const [toDo, setToDo] = useState([]);
 
@@ -126,15 +153,24 @@ function Project({ index }) {
         setUpdateData("");
     };
 
-    if (index === null) return <div></div>;
+    if (data === null) return <div></div>;
 
     return (
         <div className="container App">
-            <ProjectDescription />
+            <Card style={{ width: "100%" }}>
+                <Card.Body>
+                    <Card.Title>{data.name}</Card.Title>
+                    <Card.Subtitle className="mb-2 text-muted">
+                        Created by:
+                        {/* TODO */}
+                    </Card.Subtitle>
+                    <Card.Text>{data.description}</Card.Text>
+                </Card.Body>
+            </Card>
             <br />
             <br />
             <h2>Tasks</h2>
-
+            {/* 
             {updateData && updateData ? (
                 <UpdateForm
                     updateData={updateData}
@@ -150,8 +186,6 @@ function Project({ index }) {
                 />
             )}
 
-            {/* Display ToDos */}
-
             {toDo && toDo.length ? "" : "No Tasks..."}
 
             <ToDo
@@ -159,7 +193,7 @@ function Project({ index }) {
                 markDone={markDone}
                 setUpdateData={setUpdateData}
                 deleteTask={deleteTask}
-            />
+            /> */}
         </div>
     );
 }

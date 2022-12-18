@@ -8,7 +8,7 @@ export const userSlice = createSlice({
     },
     reducers: {
         setUser: (state, action) => {
-            console.log("reducer called");
+            console.log("reducer called", action, state.user);
             state.user = action.payload;
             // save all keys of state.user
             Object.keys(state.user).forEach((key) => {

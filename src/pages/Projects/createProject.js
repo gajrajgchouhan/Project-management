@@ -2,21 +2,30 @@ import React, { useState } from "react";
 import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
 import Modal from "react-bootstrap/Modal";
+import { useSelector } from "react-redux";
+import { toast } from "react-toastify";
 import SelectUsers from "./SelectUsers";
 
+const initialState = {
+    name: "",
+    description: "",
+    team: [""],
+};
+
 function CreateProject() {
+    const userState = useSelector((state) => state.user);
+
     const [show, setShow] = useState(false);
-    const [data, setData] = useState({
-        name: "",
-        description: "",
-        users: [],
-    });
+    const [data, setData] = useState(initialState);
 
     const handleChanges = (e, key) => {
         setData({ ...data, [key]: e.target.value });
     };
 
-    const handleClose = () => setShow(false);
+    const handleClose = () => {
+        setData(initialState);
+        setShow(false);
+    };
     const handleShow = () => setShow(true);
 
     return (
@@ -31,9 +40,25 @@ function CreateProject() {
                 </Modal.Header>
                 <Modal.Body>
                     <Form
-                        onSubmit={(e) => {
+                        onSubmit={async (e) => {
                             e.preventDefault();
-                            console.log(data);
+                            const res = await fetch(
+                                "http://localhost:5000/projects/add",
+                                {
+                                    method: "POST",
+                                    headers: {
+                                        "Content-Type": "application/json",
+                                        Authorization: `${userState.user}`,
+                                    },
+                                    body: JSON.stringify(data),
+                                }
+                            );
+                            if (res.ok) {
+                                toast.success("Project Created");
+                                handleClose();
+                            } else {
+                                toast.error("Error creating project");
+                            }
                         }}
                     >
                         <Form.Group
@@ -74,15 +99,14 @@ function CreateProject() {
                                 }
                             />
                         </Form.Group>
+                        <Button variant="success" type="submit">
+                            Create
+                        </Button>
                     </Form>
                 </Modal.Body>
                 <Modal.Footer>
-                    <Button
-                        variant="success"
-                        onClick={handleClose}
-                        type="submit"
-                    >
-                        Create
+                    <Button variant="secondary" onClick={handleClose}>
+                        Close
                     </Button>
                 </Modal.Footer>
             </Modal>
