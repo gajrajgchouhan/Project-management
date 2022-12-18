@@ -4,6 +4,7 @@ const cors = require("cors");
 const db = require("./db");
 const authRoutes = require("./modules/auth/auth.routes");
 const { ValidationError } = require("express-json-validator-middleware");
+const projectRoutes = require("./modules/project/project.routes");
 
 require("dotenv").config();
 
@@ -26,6 +27,7 @@ async function main() {
     });
 
     authRoutes(app);
+    projectRoutes(app);
 
     app.use((error, request, response, next) => {
         // Check the error is a validation error

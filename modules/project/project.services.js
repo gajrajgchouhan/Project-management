@@ -20,6 +20,10 @@ const serverChatClient = StreamChat.getInstance(
 exports.addProjectService = async (req, res, next) => {
     const { name, description, team } = req.body;
 
+    const user = await userModel
+        .findById(res.locals.user.id, { username: 1 })
+        .exec();
+
     // team is an array of emails
     const userIds = await Promise.all(
         team.map(async (username) => {
@@ -36,7 +40,7 @@ exports.addProjectService = async (req, res, next) => {
     }
 
     const teamId = await teamModel.create({
-        members: userIds,
+        members: [...userIds, res.locals.user.id],
         created_by: res.locals.user.id,
     });
 
@@ -44,7 +48,7 @@ exports.addProjectService = async (req, res, next) => {
 
     const channel = serverChatClient.channel("messaging", {
         name,
-        members: teamId.members,
+        members: [...team, user.username],
         created_by_id: res.locals.user.id,
     });
     await channel.create();
@@ -64,6 +68,7 @@ exports.addProjectService = async (req, res, next) => {
 };
 
 exports.getAllProjectsService = async (req, res, next) => {
+    console.log("getAll");
     const { user } = res.locals;
 
     // get id of all teams
@@ -100,7 +105,9 @@ exports.getAllProjectsService = async (req, res, next) => {
             { channelId: 0 }
         )
         .populate("team")
+        .populate("team.members")
         .populate("tasks")
+        .populate("created_by", { password: 0, __v: 0 })
         .exec();
 
     res.status(200).json({ projects });

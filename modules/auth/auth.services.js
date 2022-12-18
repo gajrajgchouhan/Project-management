@@ -2,6 +2,7 @@ const userModal = require("../../models/user");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 
+const StreamChat = require("stream-chat").StreamChat;
 const stream = require("getstream");
 
 require("dotenv").config();
@@ -9,6 +10,11 @@ require("dotenv").config();
 console.log(process.env.API_KEY, process.env.API_SECRET);
 
 const serverStreamClient = stream.connect(
+    process.env.API_KEY,
+    process.env.API_SECRET
+);
+
+const serverChatClient = StreamChat.getInstance(
     process.env.API_KEY,
     process.env.API_SECRET
 );
@@ -84,6 +90,11 @@ exports.registerService = async (req, res, next) => {
     });
 
     await newUser.save();
+
+    await serverChatClient.upsertUser({
+        id: username,
+        name,
+    });
 
     return res.status(200).json({
         success: true,
