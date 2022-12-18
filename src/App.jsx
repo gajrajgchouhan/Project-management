@@ -11,6 +11,7 @@ import Navbar from "./components/nav";
 import { useSelector } from "react-redux";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import Footer from "./components/Footer";
 
 const App = () => {
     return (
@@ -25,7 +26,10 @@ const App = () => {
                     <Route path="/projects" element={<Projects />} />
                     <Route path="/profile" element={<Profile />} />
                 </Route>
+                
             </Routes>
+            <Footer />
+            <br></br>
             <ToastContainer />
         </>
     );
