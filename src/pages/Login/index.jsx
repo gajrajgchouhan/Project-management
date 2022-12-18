@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import styles from "../SignUp/SignUp.module.css";
+import styles from "./login.module.css";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { setUser } from "../../store/user.slice";
 import { useDispatch } from "react-redux";
@@ -14,7 +14,10 @@ const Login = () => {
     });
 
     return (
-        <div className={styles.container}>
+        <>
+            <div className={styles.flexbox_container}>
+                <div className={styles.side}>
+                <div className={styles.container}>
             <form
                 className={styles.formLogin}
                 onSubmit={async (e) => {
@@ -94,6 +97,19 @@ const Login = () => {
                 </div>
             </form>
         </div>
+                </div>
+                <div className={styles.main}>
+                    <center><h1 className={styles.heading}>DevColab</h1>
+                    <img 
+                                        src={require(".././Profile/img/landing_page_img.png")}
+                                        alt="DevColab"
+                                        className="my-5"
+                                        style={{ width: "500px" , marginLeft:"10%" }}
+                                        fluid
+                                    /></center>
+                </div>
+            </div>
+        </>
     );
 };
 
